@@ -11,6 +11,6 @@ Keterangan:
 - `-f` digunakan jika penamaan bukan `Dockerfile`
 
 ## Container Run
-##test jenkins
+##test jenkin
 ```bash
 docker run --rm <image-name>
