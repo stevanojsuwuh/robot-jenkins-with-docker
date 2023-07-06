@@ -7,7 +7,7 @@ pipeline {
         CHANNEL = '#training'
         IMAGE = 'my-robot-test'
         CONTAINER = 'my-robot-test-app'
-        DOCKER_APP = '/usr/local/bin/docker'
+        DOCKER_APP = '/usr/bin/docker'
     }
     stages {
         stage("Cleaning up") {
