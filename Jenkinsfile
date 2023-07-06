@@ -1,17 +1,40 @@
 pipeline {
     agent any
+    environment {
+        GIT_URL = 'git@github.com:jutionck/robot-framework-simple-jenkins.git'
+        BRANCH = 'with-docker'
+        ROBOT = '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot'
+        CHANNEL = '#training'
+        IMAGE = 'my-robot-test'
+        CONTAINER = 'my-robot-test-app'
+        DOCKER_APP = '/usr/local/bin/docker'
+    }
     stages {
-        stage("Clone Source") {
+        stage("Cleaning up") {
             steps {
-                echo 'Clone Source'
-                git branch: 'master', url: 'git@github.com:stevanojsuwuh/robot-jenkins-with-docker.git'
+                echo 'Cleaning up'
+                sh "${DOCKER_APP} rm -f ${CONTAINER} || true"
             }
         }
 
-        stage("Robot Test") {
+        stage("Clone") {
             steps {
-                echo 'Robot Test'
-                sh '/home/enigma/anaconda3/bin/robot -d Results main.robot'
+                echo 'Clone'
+                git branch: "${BRANCH}", url: "${GIT_URL}"
+            }
+        }
+
+        stage("Build") {
+            steps {
+                echo 'Build'
+                sh "${DOCKER_APP} build -t ${IMAGE} ."
+            }
+        }
+
+        stage("Run") {
+            steps {
+                echo 'Run Test'
+                sh "${DOCKER_APP} run --rm ${IMAGE}"
             }
         }
     }
@@ -21,11 +44,11 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
-            slackSend(channel: '#training', message: "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            slackSend(channel: "${CHANNEL}", message: "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
         failure {
             echo 'This will run only if failed'
-            slackSend(channel: '#training', message: "Build deployed failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            slackSend(channel: "${CHANNEL}", message: "Build deployed failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
     }
 }
