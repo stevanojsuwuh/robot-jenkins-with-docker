@@ -4,14 +4,14 @@ pipeline {
         stage("Clone Source") {
             steps {
                 echo 'Clone Source'
-                git branch: 'main', url: 'git@github.com:jutionck/robot-framework-simple-jenkins.git'
+                git branch: 'master', url: 'git@github.com:stevanojsuwuh/robot-jenkins-with-docker.git'
             }
         }
 
         stage("Robot Test") {
             steps {
                 echo 'Robot Test'
-                sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot -d Results main.robot'
+                sh '/home/enigma/anaconda3/bin/robot -d Results main.robot'
             }
         }
     }
