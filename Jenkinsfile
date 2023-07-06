@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        GIT_URL = 'git@github.com:jutionck/robot-framework-simple-jenkins.git'
-        BRANCH = 'with-docker'
-        ROBOT = '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot'
+        GIT_URL = 'git@github.com:stevanojsuwuh/robot-jenkins-with-docker.git'
+        BRANCH = 'master'
+        ROBOT = '/home/enigma/anaconda3/bin/robot'
         CHANNEL = '#training'
         IMAGE = 'my-robot-test'
         CONTAINER = 'my-robot-test-app'
